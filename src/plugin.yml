@@ -1,0 +1,9 @@
+name: Bingo # the name of the plugin.
+version: 1.0.0 # the version of the plugin.
+main: me.icicl.bingo.Main # the main class of the plugin.
+author: icicl
+api-version: 1.17
+commands:
+  bingo:
+    description: Play bingo.
+    usage: /<command> [new][join][start][map][goals]
