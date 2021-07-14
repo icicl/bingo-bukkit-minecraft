@@ -20,7 +20,10 @@ public class GameHelper {
             bplayer.player.sendMessage("The bingo game is still queueing. Consider asking an admin to start the game with §a/bingo start§f.");
             return;
         }
-        PlayerInventory inventory = bplayer.player.getInventory();
+        if (bplayer.getMap()!=null && bplayer.getMap().equals(bplayer.player.getInventory().getItemInOffHand())){
+            bplayer.player.sendMessage("You already have your card.");
+            return;
+        }
         ItemStack item = new ItemStack(Material.FILLED_MAP);
         MapView view = Bukkit.createMap(Bukkit.getWorlds().get(0));
         view.getRenderers().forEach(view::removeRenderer);
@@ -30,9 +33,11 @@ public class GameHelper {
         MapMeta meta = (MapMeta)item.getItemMeta();
         meta.setMapView(view);
         item.setItemMeta(meta);
-        inventory.addItem(item); // Adds a stack of diamonds to the player's inventory
+        PlayerInventory inventory = bplayer.player.getInventory();
+        inventory.setItemInOffHand(item);
+//        inventory.addItem(item);
+        bplayer.setMap(item);
         bplayer.player.sendMessage("Here is your bingo card!");
-
     }
     public String nice_text(Material mat){
         return mat.getKey().getKey().replace("minecraft:","").replace("_"," ").toUpperCase();

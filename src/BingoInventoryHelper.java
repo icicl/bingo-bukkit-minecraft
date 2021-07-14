@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.ArrayList;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceExtractEvent;
+import org.bukkit.event.inventory.*;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -50,31 +50,34 @@ public class BingoInventoryHelper implements Listener{
             find_goal(bplayer,e.getItemType());
         }
     }
-    /*public List<Material> checkInventory(BingoPlayer bplayer){
-        List<Material> found=new ArrayList();
-        Inventory inv=bplayer.player.getInventory();
-        for (Material mat:bplayer.goals_remaining){
-            plugin.log(""+mat.getKey());
-            if (inv.contains(mat)){
-                found.add(mat);
-            }
+    @EventHandler
+    public void invEvent2(InventoryClickEvent e){
+        BingoPlayer bp=null;
+        plugin.log(e.getInventory().getType().toString());
+        if (plugin.game!=null){
+            bp=plugin.game.get_player_and_active((Player)e.getWhoClicked());
         }
-        return found;
-    }
-    public void primary(BingoPlayer bplayer){
-        List<Material> found=checkInventory(bplayer);
-        plugin.log("size "+found.size());
-        if (found.size()==0){
+        if (bp==null){
             return;
         }
-        for (Material mat:found){
-            bplayer.find(mat);
+        if (e.getRawSlot()==45){
+            if (e.getCurrentItem().equals(bp.getMap())){
+                e.setCancelled(true);
+                return;
+            }
+            return;
         }
-        for (BingoPlayer bp:plugin.game.players){
-            bp.update();
+        if (e.getClick()==ClickType.SWAP_OFFHAND && e.getWhoClicked().getInventory().getItemInOffHand().equals(bp.getMap())){
+            e.setCancelled(true);
         }
-        plugin.tabagent.updatePlayer(bplayer.player);
-    }*/
+    }
+    @EventHandler
+    public void invEvent6(PlayerSwapHandItemsEvent e){
+        if (plugin.game!=null && plugin.game.get_player_and_active(e.getPlayer())!=null && plugin.game.get_player(e.getPlayer()).getMap().equals(e.getMainHandItem())){
+            e.setCancelled(true);
+        }
+    }
+
     public void find_goal(BingoPlayer bplayer, Material mat){
         bplayer.find(mat);
         for (BingoPlayer bp:plugin.game.players){

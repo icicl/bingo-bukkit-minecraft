@@ -1,6 +1,7 @@
 package me.icicl.bingo;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
@@ -36,6 +37,7 @@ public class BingoPlayer {
     private final byte COLOR_GOOD=6;
     private final byte COLOR_OK=10;
     private final byte COLOR_BAD=(byte)(42*4+2);
+    private ItemStack map;
     public int score=0;
     private boolean inBingo=false;
     public void joinBingo(){
@@ -47,6 +49,7 @@ public class BingoPlayer {
     private int[][] scores=new int[5][5];
     private boolean[][] obtained=new boolean[5][5];
     private boolean[][] bingoed=new boolean[5][5];
+    private Location spawn=null;
     public List<Material> goals_remaining=new ArrayList();
     public BingoRenderer renderer;
     public byte color_for(int x,int y){
@@ -60,6 +63,24 @@ public class BingoPlayer {
     }
     public int score_for(int x,int y){
         return scores[x][y];
+    }
+    public void setMap(ItemStack item){
+        this.map=item;
+    }
+    public void setSpawn(Location loc){
+        this.spawn=loc;
+    }
+    public void respawn(){
+        if (this.spawn==null){
+            return;
+        }
+        this.player.teleport(this.spawn);
+    }
+    public Location getSpawn(){
+        return this.spawn;
+    }
+    public ItemStack getMap(){
+        return this.map;
     }
     public void find(Material mat){
         if (goals_remaining.remove(mat)){

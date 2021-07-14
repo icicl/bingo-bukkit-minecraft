@@ -1,12 +1,12 @@
 package me.icicl.bingo;
 
-import org.bukkit.Material;
+import org.bukkit.*;
+
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
+
 import org.bukkit.entity.Player;
 
 public class GameState {
@@ -18,6 +18,8 @@ public class GameState {
         private int time;
         public List<BingoPlayer> players = new ArrayList();
         private int max_score;
+        private int max_score_base;
+        private int max_score_incr;
         private int decrement;
         private int primo_decrement;
         private boolean zero_on_bingo;
@@ -26,9 +28,11 @@ public class GameState {
         public int[][] scores = new int[SIZE][SIZE];
         private Main plugin;
         private boolean unchanged=false;
+        private World world=Bukkit.getWorlds().get(0);
         //private List<Player> need_update=new ArrayList();
     private void getConfigs(){
-        max_score=this.plugin.getConfig().getInt("initial-reward");
+        max_score_base=this.plugin.getConfig().getInt("initial-reward-base");
+        max_score_incr=this.plugin.getConfig().getInt("initial-reward-per-player");
         decrement=this.plugin.getConfig().getInt("subsequent-decrement");
         primo_decrement=this.plugin.getConfig().getInt("initial-decrement");
         zero_on_bingo=this.plugin.getConfig().getBoolean("bingo-set-score-to-zero");
@@ -46,50 +50,25 @@ public class GameState {
         getConfigs();
         this.goals=goals(this.TIME>=15*60);
         this.time=this.TIME;
-        for (int[] srow:scores){
-            Arrays.fill(srow,max_score);
-        }
-            /*Material[] m={Material.STONE, Material.DIRT, Material.DIAMOND};
-            for (int x = 0; x < SIZE; x++) {
-                for (int y = 0; y < SIZE; y++) {
-                    scores[x][y] = max_score;
-                    goals[x][y] = m[new Random().nextInt(3)];
-                }
-            }*/
     }
     public GameState(Main plugin, int t){
         this.plugin=plugin;
         getConfigs();
         this.time=t;
         this.goals=goals(t>=15*60);
-        for (int[] srow:scores){
-            Arrays.fill(srow,max_score);
-        }
     }
     public GameState(Main plugin, int t, boolean advancedGoals){
         this.plugin=plugin;
         getConfigs();
         this.time=t;
         this.goals=goals(advancedGoals);
-        for (int[] srow:scores){
-            Arrays.fill(srow,max_score);
-        }
     }
-        /*public boolean unchanged(){
-            return unchanged;
-        }
-        public void set_changed(){
-            unchanged=false;
-        }
-        public void inform_updated(Player player){
-            need_update.remove(player);
-            if need_update.length.
-        }*/
         public void find(int x, int y){
             if (scores[x][y]==max_score){
                 scores[x][y]-=primo_decrement;
+            } else {
+                scores[x][y] = Math.max(0, scores[x][y] - decrement);
             }
-            scores[x][y]=Math.max(0,scores[x][y]-decrement);
             for (BingoPlayer bp:players){
                 bp.update();
             }
@@ -155,6 +134,12 @@ public class GameState {
         }
         return goals;
     }
+    public BingoPlayer get_player_and_active(Player player){
+        if (!in_progress){
+            return null;
+        }
+        return get_player(player);
+    }
     public BingoPlayer get_player(Player player){
             for (BingoPlayer p:players){
                 if (p.player.getUniqueId().equals(player.getUniqueId())){
@@ -170,14 +155,13 @@ public class GameState {
             }
             return "  §3"+bp.score;
     }
-    public void join(Player player){//TODO no duplicates
+    public void join(Player player){
             for (BingoPlayer bp:players){
                 bp.player.sendMessage("§a"+player.getName()+"§f has joined the game!");
             }
             this.playercount++;
             this.players.add(new BingoPlayer(plugin,player));
             this.plugin.tabagent.updatePlayer(player);
-            //this.need_update.add(player);
 
         if (this.in_progress){
             player.sendMessage("The game has already begun. This did not prevent you from joining, but you are now at a disadvantage.");
@@ -186,12 +170,48 @@ public class GameState {
             player.sendMessage("You have joined the bingo game. You will receive a card with your objectives when the game starts.");
         }
     }
-    public void start(GameHelper helper){
+    public void start(GameHelper helper, boolean clearInventories, boolean teleportPlayers, boolean isolatePlayers){
+            max_score=max_score_base+playercount*max_score_incr;
+        for (int[] srow:scores){
+            Arrays.fill(srow,max_score);
+        }
             plugin.daemon.start(this.time);
             this.in_progress=true;
+            world.setTime(0);
+            Random rand=new Random();
+                int root_offset_dist = rand.nextInt(1 << 20) << 4;
+                double root_offset_angle = rand.nextFloat() * (2 * Math.PI);
+                int sub_offset_dist;
+                double sub_offset_angle;
+                int rx=(int)(root_offset_dist*Math.sin(root_offset_angle));
+                int rz=(int)(root_offset_dist*Math.cos(root_offset_angle));
+                int tx=0;
+                int tz=0;
             for (BingoPlayer player:this.players){
+                if (clearInventories){
+                    player.player.getInventory().clear();
+                }
+                if (teleportPlayers){
+                    if (isolatePlayers) {
+                        root_offset_angle +=1;
+                        rx=(int)(root_offset_angle*Math.sin(root_offset_angle));
+                        rz=(int)(root_offset_angle*Math.cos(root_offset_angle));
+                    }
+                    plugin.log(""+root_offset_angle+" "+root_offset_dist+" "+rx+" "+rz);
+                    sub_offset_angle=rand.nextFloat()*(2*Math.PI);
+                    sub_offset_dist= Math.max(rand.nextInt(1<<8),rand.nextInt(1<<8));
+                    tx=(int)(sub_offset_dist*Math.sin(sub_offset_angle));
+                    tz=(int)(sub_offset_dist*Math.cos(sub_offset_angle));
+                    Location spawn=new Location(world, rx+tx, (double)world.getHighestBlockYAt((int)(tx+rx),(int)(tz+rz)),rz+tz,player.player.getLocation().getYaw(),player.player.getLocation().getPitch()).add(0.5,1,0.5);
+                    player.setSpawn(spawn);
+                    player.respawn();
+                    player.player.setHealth(player.player.getMaxHealth());
+                    player.player.setFoodLevel(20);
+                    player.player.setSaturation(20);
+                }
                 helper.give_map(player);
                 plugin.tabagent.updatePlayer(player.player);
+                player.update();
                 player.player.sendMessage("Bingo has begun!");
             }
     }

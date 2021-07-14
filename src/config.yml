@@ -1,7 +1,8 @@
-initial-reward: 25 # the number of points each objective initially rewards
+initial-reward-base: 10 # the number of points each objective initially rewards
+initial-reward-per-player: 5 # how many points the starting value of each objective is increased by for each player (including the first one) - score is set on /bingo start, so players that join after the game starts will not increase the score.
 initial-decrement: 10 # how much the reward for and item is decreased by the first time a player finds it
 subsequent-decrement: 5 # how much the reward decreases by on each find other than the first
-bingo-set-score-to-zero: true # whether other player will no longer gain points on finding items in your bingo
+bingo-set-score-to-zero: false # whether other player will no longer gain points on finding items in your bingo
 bingo-bonus-static: 0 # how many bonus points a bingo will award, regardless of how many points you received for said bingo's items
 bingo-bonus-multiplier: 1.0 # how much items in a bingo are multiplied by, will round score increase to int. this is the BONUS, so a value of 0 means
                             # that no dynamic bonus will be given for bingos, and a value of 2 means that all the items in a bingo will award triple points.

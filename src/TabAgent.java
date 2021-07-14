@@ -42,13 +42,17 @@ public class TabAgent implements Listener {
     @EventHandler
     public void onJoinServer(PlayerJoinEvent e) {
         if (plugin.game!=null && plugin.game.get_player(e.getPlayer())!=null){
-            plugin.game.get_player(e.getPlayer()).player=e.getPlayer();
+            plugin.game.get_player(e.getPlayer()).player=e.getPlayer();//scuffed but it works, so idc
         }
         updatePlayer(e.getPlayer());
     }
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
         updatePlayer(e.getPlayer(),20);
+        if (plugin.game!=null && plugin.game.get_player(e.getPlayer())!=null){
+            e.setRespawnLocation(plugin.game.get_player(e.getPlayer()).getSpawn());
+            //plugin.game.get_player(e.getPlayer()).respawn();
+        }
     }
 
     public void updatePlayer(Player player){

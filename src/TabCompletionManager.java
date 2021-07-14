@@ -77,6 +77,14 @@ public class TabCompletionManager implements TabCompleter {
                     return list;
                 }
             }
+            if (args[0].equalsIgnoreCase("start")){
+                if (args.length>4){
+                    return list;
+                }
+                list.add("true");
+                list.add("false");
+                return list;
+            }
         }
         return  list;
     }

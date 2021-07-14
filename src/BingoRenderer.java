@@ -73,8 +73,8 @@ public class BingoRenderer extends MapRenderer {
                 }
             }
         }
-        int x_=(x+1)*(square_size+spacing_size)+1-3*TEXT_SIZE;
-        int y_=(y+1)*(square_size+spacing_size)+1-5*TEXT_SIZE;
+        int x_=(x+1)*(square_size+spacing_size)+1-1-3*TEXT_SIZE;
+        int y_=(y+1)*(square_size+spacing_size)+1-1-5*TEXT_SIZE;
         boolean unAltered=true;
         while (score>0 || unAltered){
             unAltered=false;

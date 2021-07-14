@@ -43,7 +43,7 @@ public class Main extends JavaPlugin {
         }
         for(String color:getConfig().getStringList("colors")){
             for(String suffix:getConfig().getStringList("colored")){
-                if (rand.nextInt(4)==0) {
+                if (rand.nextInt(8)==0) {
                     blocks.add(color+"_"+suffix);
                 }
             }
@@ -55,6 +55,9 @@ public class Main extends JavaPlugin {
     }
     public void log(String msg){
         Bukkit.getLogger().warning(msg);
+    }
+    public void log(int msg){
+        Bukkit.getLogger().warning(""+msg);
     }
 
 }

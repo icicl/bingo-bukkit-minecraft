@@ -1,5 +1,7 @@
 package me.icicl.bingo;
 
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,6 +38,24 @@ public class BingoCommandExecutor implements CommandExecutor {
                 Player player=null;
                 if (sender instanceof Player){
                     player=(Player)sender;
+                }
+                if (args[0].equalsIgnoreCase("solo")){
+                    if (args.length>3){
+                        sender.sendMessage("Usage: /bingo new [timeInSeconds] [useAdvancedBlocks]");
+                        return true;
+                    }
+                    if (args.length==3){
+                        onCommand(sender,cmd,label,new String[] {"new",args[1],args[2]});
+                    }
+                    else if (args.length==2){
+                        onCommand(sender,cmd,label,new String[] {"new",args[1]});
+                    }
+                    else if (args.length==1){
+                        onCommand(sender,cmd,label,new String[] {"new"});
+                    }
+                    onCommand(sender,cmd,label,new String[] {"join"});
+                    onCommand(sender,cmd,label,new String[] {"start"});
+                    return true;
                 }
                 if (args[0].equalsIgnoreCase("new")){
                     if (args.length>3){
@@ -74,6 +94,7 @@ public class BingoCommandExecutor implements CommandExecutor {
                             return true;
                         } catch (Exception e) {
                             sender.sendMessage("/bingo new [time], where time is an integer, representing game duration is seconds.");
+                            return true;
                             //plugin.game=new GameState(plugin);
                         }
                     }
@@ -103,8 +124,49 @@ public class BingoCommandExecutor implements CommandExecutor {
                     return true;
                 }
                 if (args[0].equalsIgnoreCase("start")) {//TODO check if players
+                    if (!(sender instanceof Player)) {
+                        sender.sendMessage("This command can only be run by a player.");
+                        return true;
+                    }
+                    boolean clearInv=false;
+                    boolean teleportPlayers=true;
+                    boolean isolatePlayers=false;
                     if (plugin.game!=null) {
-                        plugin.game.start(this.helper);
+                        if (args.length>4){
+                            player.sendMessage("/bingo start [clearInventories] [teleportPlayers] [isolatePlayers]");
+                            return true;
+                        }
+                        if (args.length>1){
+                            if (args[1].equalsIgnoreCase("true")){
+                                clearInv=true;
+                            } else if (args[1].equalsIgnoreCase("false")){
+                                clearInv=false;
+                            } else {
+                                player.sendMessage("/bingo start [clearInventories], where [clearInventories] is true or false.");
+                                return true;
+                            }
+                        }
+                        if (args.length>2){
+                            if (args[2].equalsIgnoreCase("true")){
+                                teleportPlayers=true;
+                            } else if (args[2].equalsIgnoreCase("false")){
+                                teleportPlayers=false;
+                            } else {
+                                player.sendMessage("/bingo start [clearInventories] [teleportPlayers], where [teleportPlayers] is true or false.");
+                                return true;
+                            }
+                        }
+                        if (args.length>3){
+                            if (args[1].equalsIgnoreCase("true")){
+                                isolatePlayers=true;
+                            } else if (args[1].equalsIgnoreCase("false")){
+                                isolatePlayers=false;
+                            } else {
+                                player.sendMessage("/bingo start [clearInventories] [teleportPlayers] [isolatePlayers], where [isolatePlayers] is true or false.");
+                                return true;
+                            }
+                        }
+                        plugin.game.start(this.helper, clearInv, teleportPlayers, isolatePlayers);
                     } else {
                         player.sendMessage("No instance of bingo. Create one with §a/bingo new§f.");
                     }
@@ -185,7 +247,20 @@ public class BingoCommandExecutor implements CommandExecutor {
                         sender.sendMessage("This command can only be run by a player.");
                         return true;
                     }
-                    player.sendMessage("Tell the dev he forgot to implement this");
+                    if (!player.getWorld().getName().equals("world")){
+                        player.sendMessage("You may only use this command in the overworld.");
+                        return true;
+                    }
+                    int px=player.getLocation().getBlockX();
+                    int pz=player.getLocation().getBlockZ();
+                    Block top_block=player.getWorld().getHighestBlockAt(px,pz);
+                    if (player.getWorld().getBlockAt(top_block.getLocation().add(0,1,0)).getType()==Material.LAVA){
+                        player.sendMessage("Teleport cancelled; hazardous terrain detected above you.");
+                        return true;
+                    }
+                    player.teleport(new Location(player.getWorld(),(double)px,(double)top_block.getLocation().getBlockY()+1,(double)pz));
+                    player.sendMessage("Teleported you to the surface.");
+                    return true;
                 }
                 /*if (args[0].equals("h")){
                     String s="";
@@ -216,10 +291,10 @@ public class BingoCommandExecutor implements CommandExecutor {
         String suff=(sender instanceof Player)?"§f":"";
         sender.sendMessage(pref+"/bingo new [timeInSeconds] [useDifficultItems]"+suff+" creates a new bingo game, and allows players to join it.");
         sender.sendMessage(pref+"/bingo join"+suff+" joins the current bingo game, if it exists and has not yet finished.");
-        sender.sendMessage(pref+"/bingo start"+suff+" starts the currently queueing bingo game.");
+        sender.sendMessage(pref+"/bingo start [clearInventories] [teleportPlayers] [isolatePlayers]"+suff+" starts the currently queueing bingo game.");
         sender.sendMessage(pref+"/bingo top"+suff+" warps you to the surface.");
         sender.sendMessage(pref+"/bingo card"+suff+" gives you a new copy of your bingo card, in case you lost yours.");
-        sender.sendMessage(pref+"/bingo goals [row] [<col>]"+suff+" tells you the specified goal(s), in text based format.");
+        sender.sendMessage(pref+"/bingo goals [row] [col]"+suff+" tells you the specified goal(s), in text based format.");
         sender.sendMessage(pref+"/bingo help"+suff+" shows this help data.");
         return true;
     }
