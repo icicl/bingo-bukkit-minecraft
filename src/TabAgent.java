@@ -1,84 +1,99 @@
 package me.icicl.bingo;
 
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.event.EventHandler;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.Bukkit;
+import org.bukkit.inventory.Inventory;
 
 public class TabAgent implements Listener {
-    private Main plugin;
 
-    public TabAgent(Main plugin) {
-        this.plugin = plugin;
-        for (Player player:Bukkit.getOnlinePlayers()){
-            updatePlayer(player);
-        }
-    }
+  private Main plugin;
 
-    @EventHandler
-    public void onDamage(EntityDamageEvent e) {
-        if ((e.getEntityType() == EntityType.PLAYER) && (e.getCause() != EntityDamageEvent.DamageCause.VOID)) {
-            Player player = (Player) e.getEntity();
-            updatePlayer(player,(int) (player.getHealth() - e.getFinalDamage()));
-        }
+  public TabAgent(Main plugin) {
+    this.plugin = plugin;
+    for (Player player : Bukkit.getOnlinePlayers()) {
+      updatePlayer(player);
     }
-    @EventHandler
-    public void onHeal(EntityRegainHealthEvent e) {
-        if (e.getEntityType() == EntityType.PLAYER) {
-            Player player = (Player) e.getEntity();
-            updatePlayer(player,(int) (player.getHealth() + e.getAmount()));
-        }
-    }
-    @EventHandler
-    public void onJoinServer(PlayerJoinEvent e) {
-        if (plugin.game!=null && plugin.game.get_player(e.getPlayer())!=null){
-            plugin.game.get_player(e.getPlayer()).player=e.getPlayer();//scuffed but it works, so idc
-        }
-        updatePlayer(e.getPlayer());
-    }
-    @EventHandler
-    public void onRespawn(PlayerRespawnEvent e) {
-        updatePlayer(e.getPlayer(),20);
-        if (plugin.game!=null && plugin.game.get_player(e.getPlayer())!=null){
-            e.setRespawnLocation(plugin.game.get_player(e.getPlayer()).getSpawn());
-            //plugin.game.get_player(e.getPlayer()).respawn();
-        }
-    }
+  }
 
-    public void updatePlayer(Player player){
-        updatePlayer(player,(int)player.getHealth());
+  @EventHandler
+  public void onDamage(EntityDamageEvent e) {
+    if (
+      (e.getEntityType() == EntityType.PLAYER) &&
+      (e.getCause() != EntityDamageEvent.DamageCause.VOID)
+    ) {
+      Player player = (Player) e.getEntity();
+      updatePlayer(player, (int) (player.getHealth() - e.getFinalDamage()));
     }
-    public void updatePlayer(Player player, int health){//TODO update on respawn;
-        String health_str = "§4";
-        for (int i = 0; i < health / 2; i++) {
-            health_str += "❤";
-        }
-        if (health % 2 == 1) {
-            health_str += "§c❤";
-        }
-        health_str += "§0";
-        for (int i = health; i < 20-1; i += 2) {
-            health_str += "❤";
-        }
-        if (plugin.game==null){
-            player.setPlayerListName("§a"+player.getName() + " " + health_str);
-            return;
-        }
-        player.setPlayerListName("§a"+player.getName() + " " + health_str + plugin.game.get_player_score(player));
+  }
+
+  @EventHandler
+  public void onHeal(EntityRegainHealthEvent e) {
+    if (e.getEntityType() == EntityType.PLAYER) {
+      Player player = (Player) e.getEntity();
+      updatePlayer(player, (int) (player.getHealth() + e.getAmount()));
     }
-    public void setBingoFooter(String footer){
-        for (BingoPlayer bp:plugin.game.players){
-            bp.player.setPlayerListFooter(footer);
-        }
+  }
+
+  @EventHandler
+  public void onJoinServer(PlayerJoinEvent e) {
+    if (plugin.game != null && plugin.game.get_player(e.getPlayer()) != null) {
+      plugin.game.get_player(e.getPlayer()).player = e.getPlayer(); //scuffed but it works, so idc
     }
+    updatePlayer(e.getPlayer());
+  }
+
+  @EventHandler
+  public void onRespawn(PlayerRespawnEvent e) {
+    updatePlayer(e.getPlayer(), 20);
+    if (plugin.game != null && plugin.game.get_player(e.getPlayer()) != null) {
+      e.setRespawnLocation(plugin.game.get_player(e.getPlayer()).getSpawn());
+      plugin.game.get_player(e.getPlayer()).respawn();
+    }
+  }
+
+  public void updatePlayer(Player player) {
+    updatePlayer(player, (int) player.getHealth());
+  }
+
+  public void updatePlayer(Player player, int health) { //TODO update on respawn;
+    String health_str = "§4";
+    for (int i = 0; i < health / 2; i++) {
+      health_str += "❤";
+    }
+    if (health % 2 == 1) {
+      health_str += "§c❤";
+    }
+    health_str += "§0";
+    for (int i = health; i < 20 - 1; i += 2) {
+      health_str += "❤";
+    }
+    if (plugin.game == null) {
+      player.setPlayerListName("§a" + player.getName() + " " + health_str);
+      return;
+    }
+    player.setPlayerListName(
+      "§a" +
+      player.getName() +
+      " " +
+      health_str +
+      plugin.game.get_player_score(player)
+    );
+  }
+
+  public void setBingoFooter(String footer) {
+    for (BingoPlayer bp : plugin.game.players) {
+      bp.player.setPlayerListFooter(footer);
+    }
+  }
 }

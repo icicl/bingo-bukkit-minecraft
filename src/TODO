@@ -1,10 +1,9 @@
-
-support earleir games
-
-
+Support Earlier Games -- should work, just need to downgrade api and test
 bug with health in tab not updating on respawn
 
-time 0
-weath clear
+read map image bitmaps from file instead of in class
+categories for armor/tools, and sea temple?
 
-max hp/hunger
+admin only for /bingo new?
+
+/bingo about
