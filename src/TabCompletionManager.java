@@ -20,6 +20,7 @@ public class TabCompletionManager implements TabCompleter {
     root_args.add("card");
     root_args.add("top");
     root_args.add("goals");
+    root_args.add("about");
     root_args.add("help");
   }
 

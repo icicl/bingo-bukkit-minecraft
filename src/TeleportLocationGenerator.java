@@ -26,7 +26,7 @@ public class TeleportLocationGenerator {
         rz = (int) (root_offset_dist * Math.cos(root_offset_angle));
     }
     public Location getNextLoc(Player player, World world){
-        Location loc;
+        Location loc = null;
         if (isolatePlayers) {
             root_offset_angle += 1;
             rx = (int) (root_offset_angle * Math.sin(root_offset_angle));
@@ -49,7 +49,8 @@ public class TeleportLocationGenerator {
                         return loc.add(0.5,1,0.5);
                     }
         }
-        return getNextLoc(player,world);
+        return loc.add(0.5,1,0.5);//TODO water
+        //return getNextLoc(player,world);
     }
 
 }

@@ -25,6 +25,7 @@ public class GameState {
   private int bingo_static_bonus;
   private double bingo_dyn_bonus;
   public int[][] scores = new int[SIZE][SIZE];
+  private boolean[][] found=new boolean[SIZE][SIZE];
   private Main plugin;
   private boolean unchanged = false;
   private World world = Bukkit.getWorlds().get(0);
@@ -74,12 +75,28 @@ public class GameState {
   }
 
   public void find(int x, int y) {
-    if (scores[x][y] == max_score) {
+    if (!found[x][y]) {
       scores[x][y] -= primo_decrement;
+      found[x][y]=true;
     } else {
       scores[x][y] = Math.max(0, scores[x][y] - decrement);
     }
     for (BingoPlayer bp : players) {
+      bp.update();
+    }
+  }
+  public void decrease_all(int amount){
+    if (amount==0){
+      return;
+    }
+    for (int i=0;i<5;i++){
+      for (int j=0;j<5;j++){
+        scores[i][j]=Math.max(0,scores[i][j]-amount);
+      }
+    }
+    for (BingoPlayer bp:players){
+      bp.player.sendMessage("Rewards for remaining items have decreased by "+amount+(amount==1?"pt.":"pts."));
+      bp.player.playSound(bp.player.getLocation(),Sound.BLOCK_NOTE_BLOCK_XYLOPHONE, 1, 0.5f);
       bp.update();
     }
   }
@@ -287,7 +304,7 @@ public class GameState {
     for (BingoPlayer player : this.players) {
       player.player.playSound(
         player.player.getLocation(),
-        Sound.ENTITY_PLAYER_LEVELUP,
+        Sound.ENTITY_ILLUSIONER_PREPARE_BLINDNESS,// TODO version check //Sound.ENTITY_PLAYER_LEVELUP,
         1,
         1
       );

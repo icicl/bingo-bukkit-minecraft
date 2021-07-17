@@ -316,6 +316,10 @@ public class BingoCommandExecutor implements CommandExecutor {
         player.sendMessage("Teleported you to the surface.");
         return true;
       }
+      if (args[0].equalsIgnoreCase("about")){
+        sender.sendMessage("Bingo v§c"+plugin.getDescription().getVersion()+"§f by §aicicl§f.");
+        return true;
+      }
     }
     String pref = (sender instanceof Player) ? "§a" : "";
     String suff = (sender instanceof Player) ? "§f" : "";
@@ -352,6 +356,7 @@ public class BingoCommandExecutor implements CommandExecutor {
       suff +
       " tells you the specified goal(s), in text based format."
     );
+    sender.sendMessage(pref+"/bingo about"+suff+" shows the plugin version and author.");
     sender.sendMessage(pref + "/bingo help" + suff + " shows this help data.");
     return true;
   }

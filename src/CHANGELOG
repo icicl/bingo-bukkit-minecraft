@@ -1,0 +1,10 @@
+
+1.1.0
+ Optional time-based reward decrease.
+ Players now receive a stack of golden carrots alongside their iron tools.
+ Adjusted listener to now register taking items from other inventories, like when using a stonecutter or looting a chest.
+ Added a configurable increase to furnaces' smelting speed.
+ Bug fixes:
+  If your inventory was completely full, you would receive credit when shift clicking a crafting result, although it would not actually do the craft.
+  Clicking the result of a craft with a different item would give you credit for the craft without it occuring.
+  Text on startup used incorrect title.
