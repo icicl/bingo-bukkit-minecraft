@@ -1,5 +1,3 @@
-package me.icicl.bingo;
-
 import org.bukkit.Material;
 
 import java.util.Dictionary;

@@ -1,17 +1,10 @@
-package me.icicl.bingo;
+import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-
-import org.bukkit.Bukkit;
-import org.bukkit.block.Furnace;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.inventory.FurnaceBurnEvent;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class Main extends JavaPlugin {
 
@@ -22,7 +15,7 @@ public class Main extends JavaPlugin {
 
     public void onEnable() {
         PluginCommand bingoCommand = this.getCommand("bingo");
-        bingoCommand.setExecutor(new me.icicl.bingo.BingoCommandExecutor(this));
+        bingoCommand.setExecutor(new BingoCommandExecutor(this));
         bingoCommand.setTabCompleter(new TabCompletionManager(this));
         saveDefaultConfig();
         Bukkit
@@ -83,7 +76,8 @@ public class Main extends JavaPlugin {
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 wl = getConfig().getIntegerList("blocks." + cfg);
                 tw = wl.get(0) + (advanced ? wl.get(1) / 2 : 0);
                 if (tw > 0) {
