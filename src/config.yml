@@ -9,6 +9,13 @@ bingo-set-score-to-zero: false # whether other player will no longer gain points
 bingo-bonus-static: 0 # how many bonus points a bingo will award, regardless of how many points you received for said bingo's items
 bingo-bonus-multiplier: 1.0 # how much items in a bingo are multiplied by, will round score increase to int. this is the BONUS, so a value of 0 means
                             # that no dynamic bonus will be given for bingos, and a value of 2 means that all the items in a bingo will award triple points.
+initial-items-unbreakable: # players will be given these items at the start of the game, and every time they respawn.
+  - iron_pickaxe
+  - iron_axe
+  - iron_shovel
+initial-items: # players will also be given the specified amount of these items at the start of the game, and when they respawn.
+  golden_carrot: 64
+
 
 blocks:
   red_:
@@ -268,7 +275,7 @@ blocks:
     black_terracotta: [10,0]
     black_wool: [10,0]
   acacia:
-    weight: [10,0]
+    weight: [5,25]
     acacia_boat: [10,0]
     acacia_button: [0,0]
     acacia_door: [10,0]
@@ -302,7 +309,7 @@ blocks:
     birch_trapdoor: [10,0]
     birch_wood: [0,0]
   dark_oak:
-    weight: [10,0]
+    weight: [5,25]
     dark_oak_boat: [10,0]
     dark_oak_button: [0,0]
     dark_oak_door: [10,0]
@@ -353,7 +360,7 @@ blocks:
     oak_trapdoor: [10,0]
     oak_wood: [0,0]
   spruce:
-    weight: [10,0]
+    weight: [5,25]
     spruce_boat: [10,0]
     spruce_button: [0,0]
     spruce_door: [10,0]
@@ -401,12 +408,12 @@ blocks:
   flower:
     weight: [10,0]
     red_tulip: [10,0]
-    orange_tulip: [10,0]
-    blue_orchid: [10,0]
-    pink_tulip: [10,0]
-    allium: [10,0]
-    white_tulip: [10,0]
-    blue_ice: [0,0]
+    orange_tulip: [4,0]
+    blue_orchid: [6,0]
+    pink_tulip: [4,0]
+    allium: [4,0]
+    white_tulip: [4,0]
+  blue_ice: [0,0]
   brown_mushroom: [10,0]
   brown_mushroom_block: [0,0]
   activator_rail: [10,0]
@@ -424,7 +431,7 @@ blocks:
   azalea_leaves: [0,0]
   azure_bluet: [10,0]
   baked_potato: [2,40]
-  bamboo: [4,30]
+  bamboo: [0,50]
   bamboo_sapling: [0,0]
   barrel: [10,0]
   basalt: [0,50]
@@ -517,7 +524,7 @@ blocks:
   cobblestone_slab: [0,0]
   cobblestone_stairs: [0,0]
   cobblestone_wall: [0,0]
-  cobweb: [4,30]
+  cobweb: [0,50]
   cocoa: [0,00]
   cocoa_beans: [0,50]
   cod: [10,0]
@@ -638,7 +645,7 @@ blocks:
   end_stone_bricks: [0,0]
   ender_chest: [0,50]
   ender_eye: [0,50]
-  ender_pearl: [1,45]
+  ender_pearl: [0,50]
   exposed_copper: [0,0]
   exposed_cut_copper: [0,0]
   exposed_cut_copper_slab: [0,0]
@@ -698,7 +705,7 @@ blocks:
   grindstone: [10,0]
   gunpowder: [10,0]
   hanging_roots: [0,0]
-  hay_block: [4,30]
+  hay_block: [1,45]
   heart_of_the_sea: [0,50]
   heavy_weighted_pressure_plate: [0,0]
   honey_block: [0,0]
@@ -749,7 +756,7 @@ blocks:
   large_amethyst_bud: [0,0]
   large_fern: [0,0]
   lava_cauldron: [0,0]
-  lead: [10,0]
+  lead: [0,50]
   leather: [10,0]
   leather_boots: [0,0]
   leather_chestplate: [0,0]
@@ -916,9 +923,9 @@ blocks:
   quartz_pillar: [0,50]
   quartz_slab: [0,0]
   quartz_stairs: [0,0]
-  rabbit: [10,0]
-  rabbit_hide: [10,0]
-  rabbit_stew: [10,0]
+  rabbit: [5,25]
+  rabbit_hide: [5,25]
+  rabbit_stew: [0,30]
   rail: [10,0]
   raw_copper: [10,0]
   raw_copper_block: [10,0]

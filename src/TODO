@@ -1,4 +1,5 @@
 Support Earlier Games -- should work, just need to downgrade api and test
+
 bug with health in tab not updating on respawn
 
 read map image bitmaps from file instead of in class
@@ -7,3 +8,6 @@ categories for armor/tools, and sea temple?
 admin only for /bingo new?
 
 milk bucket
+
+freeze day/night option
+put players in same biome?

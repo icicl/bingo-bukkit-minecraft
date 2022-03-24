@@ -18,6 +18,7 @@ public class Main extends JavaPlugin {
     public GameState game;
     public TabAgent tabagent;
     public GameDaemon daemon;
+    private long seed;
 
     public void onEnable() {
         PluginCommand bingoCommand = this.getCommand("bingo");
@@ -39,8 +40,17 @@ public class Main extends JavaPlugin {
         Bukkit.getLogger().info("Bingo plugin has been disabled.");
     }
 
+    public long getSeed() {
+        return seed;
+    }
+
+    public void setSeed(long newSeed) {
+        this.seed = newSeed;
+    }
+
     public List<String> getMaterials(boolean advanced) {
-        Random rand = new Random();
+//        log("Material selection performed using seed: " + getSeed());
+        Random rand = new Random(this.seed);
         List<String> blocks = new ArrayList();
         List<Integer> weights = new ArrayList();
         int weight = 0;
@@ -49,7 +59,7 @@ public class Main extends JavaPlugin {
         List<Integer> wl;
         for (String cfg : getConfig().getConfigurationSection("blocks").getKeys(false)) {
             if (getConfig().getConfigurationSection("blocks." + cfg) != null) {
-                temp_weight = 0;
+                temp_weight = 0;//getConfig().getStringList()
                 for (String mat : getConfig().getConfigurationSection("blocks." + cfg).getKeys(false)) {
                     if (!mat.equalsIgnoreCase("weight")) {
                         wl = getConfig().getIntegerList("blocks." + cfg + "." + mat);

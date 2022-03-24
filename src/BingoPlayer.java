@@ -13,6 +13,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
 
@@ -72,10 +73,40 @@ public class BingoPlayer {
     }
 
     public void respawn() {
-        this.player.getInventory().addItem(new ItemStack(Material.IRON_PICKAXE));
-        this.player.getInventory().addItem(new ItemStack(Material.IRON_AXE));
-        this.player.getInventory().addItem(new ItemStack(Material.IRON_SHOVEL));
-        this.player.getInventory().addItem(new ItemStack(Material.GOLDEN_CARROT, 64));
+        ItemStack tool;
+        ItemMeta meta;
+        PlayerInventory pinv=this.player.getInventory();
+        for (String item:this.plugin.getConfig().getStringList("initial-items-unbreakable")){
+            tool=new ItemStack(Material.getMaterial(item.toUpperCase()));
+            meta=tool.getItemMeta();
+            meta.setUnbreakable(true);
+            tool.setItemMeta(meta);
+            if (tool==null){
+                this.plugin.log(item+" not recognized as valid material.");
+            } else {
+                pinv.addItem(tool);
+            }
+        }
+        for (String item : this.plugin.getConfig().getConfigurationSection("initial-items").getKeys(false)) {
+            tool=new ItemStack(Material.getMaterial(item.toUpperCase()),this.plugin.getConfig().getInt("initial-items."+item));
+            if (tool==null){
+                this.plugin.log(item+" not recognized as valid material.");
+            } else {
+                pinv.addItem(tool);
+            }
+        }
+/*        tool=new ItemStack(Material.IRON_PICKAXE);
+        ItemMeta meta=tool.getItemMeta();
+        meta.setUnbreakable(true);
+        tool.setItemMeta(meta);
+        pinv.addItem(tool);
+        tool=new ItemStack(Material.IRON_AXE);
+        tool.getItemMeta().setUnbreakable(true);
+        pinv.addItem(tool);
+        tool=new ItemStack(Material.IRON_SHOVEL);
+        tool.getItemMeta().setUnbreakable(true);
+        pinv.addItem(tool);
+        this.player.getInventory().addItem(new ItemStack(Material.GOLDEN_CARROT, 64));*/
         //this.player.getInventory().addItem(new ItemStack(Material.FURNACE,64));
         //this.player.getInventory().addItem(new ItemStack(Material.COAL,64));
         //this.player.getInventory().addItem(new ItemStack(Material.RAW_IRON,64));
@@ -123,7 +154,7 @@ public class BingoPlayer {
                                     1,
                                     1
                             );
-                            player.sendMessage(
+                            bp.player.sendMessage(
                                     (bp.equals(this) ? "You" : "§a" + player.getName() + "§f") + " found §6" +
                                             mat
                                                     .getKey()

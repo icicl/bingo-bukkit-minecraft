@@ -1,17 +1,17 @@
 package me.icicl.bingo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
 import org.bukkit.*;
+import org.bukkit.advancement.Advancement;
+import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Player;
 
 public class GameState {
 
   private final int SIZE = 5;
   public boolean in_progress = false;
-  private Material[][] goals = new Material[SIZE][SIZE];
+  private Material[][] goals;
   private int playercount = 0;
   public int TIME = 10 * 60;
   private int time;
@@ -146,15 +146,16 @@ public class GameState {
       return null;
     }
     Material[][] goals = new Material[SIZE][SIZE];
-    Random rand = new Random();
+    Random rand = new Random(this.plugin.getSeed());
     for (int i = 0; i < SIZE; i++) {
       for (int j = 0; j < SIZE; j++) {
         goals[i][j] = materials.remove(rand.nextInt(materials.size()));
       }
     }
+    this.plugin.setSeed(rand.nextLong());
     return goals;
   }
-
+/*
   public Material[][] goals(boolean advancedGoals, int z) {
     List<Material> materials = new ArrayList();
     for (String mat : this.plugin.getMaterials(advancedGoals)) {
@@ -187,6 +188,7 @@ public class GameState {
     }
     return goals;
   }
+  */
 
   public BingoPlayer get_player_and_active(Player player) {
     if (!in_progress) {
@@ -262,6 +264,13 @@ public class GameState {
     for (BingoPlayer player : this.players) {
       if (clearInventories) {
         player.player.getInventory().clear();
+        Iterator<Advancement> iterator = Bukkit.getServer().advancementIterator();
+        while (iterator.hasNext())
+        {
+          AdvancementProgress progress = player.player.getAdvancementProgress(iterator.next());
+          for (String criteria : progress.getAwardedCriteria())
+            progress.revokeCriteria(criteria);
+        }
       }
       if (teleportPlayers) {
         player.setSpawn(locgen.getNextLoc(player.player,world));
@@ -278,6 +287,7 @@ public class GameState {
   }
 
   public void end() {
+    record();
     int max_score = 0;
     String tabmsg;
     List<BingoPlayer> victors = new ArrayList();
@@ -328,5 +338,9 @@ public class GameState {
       player.player.setPlayerListFooter(tabmsg);
     }
     plugin.game = null;
+  }
+
+  public void record() {
+
   }
 }

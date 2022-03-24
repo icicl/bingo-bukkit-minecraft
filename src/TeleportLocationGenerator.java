@@ -1,6 +1,7 @@
 package me.icicl.bingo;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -29,8 +30,14 @@ public class TeleportLocationGenerator {
         Location loc = null;
         if (isolatePlayers) {
             root_offset_angle += 1;
-            rx = (int) (root_offset_angle * Math.sin(root_offset_angle));
-            rz = (int) (root_offset_angle * Math.cos(root_offset_angle));
+            rx = (int) (root_offset_dist * Math.sin(root_offset_angle));
+            rz = (int) (root_offset_dist * Math.cos(root_offset_angle));
+        }
+        if (world.getHighestBlockAt(rx,rz).getType()==Material.WATER){
+            root_offset_angle+=1;
+            rx = (int) (root_offset_dist * Math.sin(root_offset_angle));
+            rz = (int) (root_offset_dist * Math.cos(root_offset_angle));
+            return getNextLoc(player,world);
         }
         for (int i=0;i<16;i++){
             sub_offset_angle = rand.nextFloat() * (2 * Math.PI);
@@ -49,6 +56,7 @@ public class TeleportLocationGenerator {
                         return loc.add(0.5,1,0.5);
                     }
         }
+        world.getBlockAt(loc).setType(Material.GLASS);
         return loc.add(0.5,1,0.5);//TODO water
         //return getNextLoc(player,world);
     }
