@@ -1,19 +1,14 @@
-package me.icicl.bingo;
-
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.FurnaceInventory;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -21,7 +16,7 @@ public class BingoInventoryHelper implements Listener {
 
     private final int FURNACE_SPEED;
     boolean full_inv;
-    private Main plugin;
+    private final Main plugin;
     private int burntime;
 
     public BingoInventoryHelper(Main plugin) {

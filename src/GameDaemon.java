@@ -1,5 +1,3 @@
-package me.icicl.bingo;
-
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class GameDaemon extends BukkitRunnable { //i dont know what daemon means, i just called it this because i like how it sounds
@@ -31,6 +29,15 @@ public class GameDaemon extends BukkitRunnable { //i dont know what daemon means
             timer = -1;
             return;
         }
+
+        if (timer == 60) {
+            plugin.game.warnTimeLeft(timer);
+        }
+
+        if (timer == 60 * 5) {
+            plugin.game.warnTimeLeft(timer);
+        }
+
         plugin.tabagent.setBingoFooter(formatFooter(timer));
         timer--;
         score_counter--;

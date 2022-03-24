@@ -1,6 +1,6 @@
 name: Bingo # the name of the plugin.
 version: 1.1.2 # the version of the plugin.
-main: me.icicl.bingo.Main # the main class of the plugin.
+main: Main # the main class of the plugin.
 author: icicl
 api-version: 1.13
 #load: startup

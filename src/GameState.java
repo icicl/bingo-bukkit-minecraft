@@ -1,11 +1,12 @@
-package me.icicl.bingo;
-
-import java.util.*;
-
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.entity.Player;
+
+import java.util.*;
 
 public class GameState {
 
@@ -259,7 +260,7 @@ public class GameState {
     this.clearinv=clearInventories;
     world.setTime(0);
     if (teleportPlayers){
-      locgen=new me.icicl.bingo.TeleportLocationGenerator(isolatePlayers);
+      locgen=new TeleportLocationGenerator(isolatePlayers);
     }
     for (BingoPlayer player : this.players) {
       if (clearInventories) {
@@ -342,5 +343,14 @@ public class GameState {
 
   public void record() {
 
+  }
+
+
+  public void warnTimeLeft(int secondsLeft) {
+    for (BingoPlayer bp:players){
+      bp.player.sendMessage("There is " + secondsLeft / 60 + " minute(s) left.");
+      bp.player.playSound(bp.player.getLocation(),Sound.BLOCK_NOTE_BLOCK_HARP, 1, 0.5f);
+      bp.update();
+    }
   }
 }

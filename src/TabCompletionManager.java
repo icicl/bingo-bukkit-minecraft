@@ -1,5 +1,3 @@
-package me.icicl.bingo;
-
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.command.Command;

@@ -1,5 +1,3 @@
-package me.icicl.bingo;
-
 import java.io.IOException;
 import java.util.Iterator;
 import org.bukkit.Bukkit;

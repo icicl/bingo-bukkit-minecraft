@@ -1,7 +1,3 @@
-package me.icicl.bingo;
-
-import java.util.Locale;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -64,8 +60,7 @@ public class GameHelper {
             );
             return;
         }
-        String s;
-        String m;
+
         if (row == -1) {
             if (col == -1) {
                 player.sendMessage(
