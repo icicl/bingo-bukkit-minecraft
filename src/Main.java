@@ -11,7 +11,8 @@ public class Main extends JavaPlugin {
     public GameState game;
     public TabAgent tabagent;
     public GameDaemon daemon;
-    private long seed;
+    private long seed = new Random().nextLong();
+    public final MaterialDisplay materialDisplay = new MaterialDisplay();
 
     public void onEnable() {
         PluginCommand bingoCommand = this.getCommand("bingo");

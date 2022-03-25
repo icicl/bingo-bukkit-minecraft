@@ -1,5 +1,5 @@
 # What is this Plugin?
-This plugin is a minigame for minecraft (1.17.1) where all participants try to find as many items as they can from a 5 by 5 grid, in order to score the most points. Unlike other Bingo games, a bingo is not required to win, although it does help.
+This plugin is a minigame for minecraft (1.18) where all participants try to find as many items as they can from a 5 by 5 grid, in order to score the most points. Unlike other Bingo games, a bingo is not required to win, although it does help.
 
 ## Features
 ![](https://github.com/icicl/bingo-bukkit-minecraft/blob/main/images/gameplay_01.png?raw=true)

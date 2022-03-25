@@ -13,7 +13,7 @@ public class BingoRenderer extends MapRenderer {
     private final byte COLOR_BAD = (byte) (42 * 4 + 2);
     private final byte COLOR_BLACK = 119;
     private final int TEXT_SIZE = 1;
-    private final short[] NUMBERS = {//binary go brrrrrrr
+    private final short[] NUMBERS = {// three by five black and transparent numbers from 0-9, starting topleft, going top to bottom, then right to left
             0b111111000111111,
             0b010011111100001,
             0b101111010111101,
@@ -25,7 +25,7 @@ public class BingoRenderer extends MapRenderer {
             0b111111010111111,
             0b111011010111111,
     };
-    private final Dictionary MATERIALS_DISPLAY = new MaterialDisplay().get();
+    private final Dictionary MATERIALS_DISPLAY;
     public boolean unchanged = false;
     private Player player;
     private Main plugin;
@@ -35,6 +35,7 @@ public class BingoRenderer extends MapRenderer {
     public BingoRenderer(Player player, Main plugin) {
         this.player = player;
         this.plugin = plugin;
+        this.MATERIALS_DISPLAY = plugin.materialDisplay.get();
     }
 
     @Override

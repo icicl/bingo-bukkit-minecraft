@@ -348,8 +348,8 @@ public class GameState {
 
   public void warnTimeLeft(int secondsLeft) {
     for (BingoPlayer bp:players){
-      bp.player.sendMessage("There is " + secondsLeft / 60 + " minute(s) left.");
-      bp.player.playSound(bp.player.getLocation(),Sound.BLOCK_NOTE_BLOCK_HARP, 1, 0.5f);
+      bp.player.sendMessage("You have §5" + secondsLeft / 60 + ":" + (secondsLeft%60 < 10 ? "0" : "") + secondsLeft%60 + "§f remaining.");
+      bp.player.playSound(bp.player.getLocation(),Sound.BLOCK_AMETHYST_BLOCK_PLACE, 1, 0.5f);
       bp.update();
     }
   }
