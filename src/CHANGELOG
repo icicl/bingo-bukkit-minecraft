@@ -1,6 +1,15 @@
+1.1.5
+ Add /bingo conscript command, to allow for adding people who forget they have to join.
+ Add /bingo prolong to increase the duration of thegame mid-play
+ Fixed bug where milking a cow did not trigger the item collection detection function.
+ Added ability to put enchantments on tools, and put looting 3 on the axe and fortune 3 on the pick in the default config.
+1.1.4
+ Add reminder when 5:00 and 1:00 remain. Optimize loading time when making new game.
+ Changed /bingo card to run even if a player has a map to help with bug where when
+ a player is killed and their map taken by another player, the respawning player will have the killer's card.
 1.1.3
  Fix bug where players would remain near spawn when isolatePlayers flag was set.
- Fix bug where goals would non change until plugin was restarted.
+ Fix bug where goals would not change until plugin was restarted.
 1.1.2
  When clearInventories is set to true, achievements are also cleared.
 1.1.1

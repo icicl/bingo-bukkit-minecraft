@@ -1,4 +1,5 @@
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,6 +8,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 
 public class TabAgent implements Listener {
 
@@ -48,11 +50,16 @@ public class TabAgent implements Listener {
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent e) {
-        updatePlayer(e.getPlayer(), 20);
         if (plugin.game != null && plugin.game.get_player(e.getPlayer()) != null) {
             e.setRespawnLocation(plugin.game.get_player(e.getPlayer()).getSpawn());
             plugin.game.get_player(e.getPlayer()).respawn();
         }
+        updatePlayer(e.getPlayer(), 20);
+    }
+
+    @EventHandler
+    public void onWorldTransition(PlayerChangedWorldEvent e) {
+        updatePlayer(e.getPlayer());
     }
 
     public void updatePlayer(Player player) {
@@ -79,7 +86,7 @@ public class TabAgent implements Listener {
                 "§a" +
                         player.getName() +
                         " " +
-                        health_str +
+                        health_str + " " + ((player.getWorld().getEnvironment() == World.Environment.NORMAL) ? "§f" : ((player.getWorld().getEnvironment() == World.Environment.NETHER) ? "§4" : "§a")) + "☀" +
                         plugin.game.get_player_score(player)
         );
     }

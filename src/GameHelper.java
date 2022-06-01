@@ -21,14 +21,14 @@ public class GameHelper {
             );
             return;
         }
-        if (
+/*        if (
                 bplayer.getMap() != null &&
                         bplayer.getMap().equals(bplayer.player.getInventory().getItemInOffHand())
         ) {
             bplayer.player.sendMessage("You already have your card. Forcing inventory update.");
             bplayer.player.updateInventory();
             return;
-        }
+        }*/
         ItemStack item = new ItemStack(Material.FILLED_MAP);
         MapView view = Bukkit.createMap(Bukkit.getWorlds().get(0));
         view.getRenderers().forEach(view::removeRenderer);
@@ -37,6 +37,7 @@ public class GameHelper {
         view.setLocked(false);
         MapMeta meta = (MapMeta) item.getItemMeta();
         meta.setMapView(view);
+        meta.setDisplayName("§a" + bplayer.player.getName() + "'s bingo card§f");
         item.setItemMeta(meta);
         PlayerInventory inventory = bplayer.player.getInventory();
         inventory.setItemInOffHand(item);

@@ -341,6 +341,13 @@ public class GameState {
     plugin.game = null;
   }
 
+  public void prolong(int seconds) {
+    plugin.daemon.prolong(seconds);
+    for (BingoPlayer bp : players) {
+      bp.player.sendMessage("Game duration prolonged by " + seconds);
+    }
+  }
+
   public void record() {
 
   }

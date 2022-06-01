@@ -1,13 +1,28 @@
 Support Earlier Games -- should work, just need to downgrade api and test
 
-bug with health in tab not updating on respawn
+bug with health in tab not updating on respawn only for self player
 
-read map image bitmaps from file instead of in class
 categories for armor/tools, and sea temple?
 
-admin only for /bingo new?
+admin only for /bingo new if ongoing game?
 
-milk bucket
+check integer args for times
+
+on /top preserve pitch and yaw
+"run it back" button
+
+/bingo kick
+/bingo roster
+
+keepinv
 
 freeze day/night option
 put players in same biome?
+
+teams?
+
+totem, but if used has penalty
+
+/bingo all [time]
+
+rejoin, start with blocks

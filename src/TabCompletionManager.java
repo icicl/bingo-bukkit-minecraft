@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -14,6 +16,7 @@ public class TabCompletionManager implements TabCompleter {
     this.plugin = plugin;
     root_args.add("new");
     root_args.add("join");
+    root_args.add("conscript");
     root_args.add("start");
     root_args.add("card");
     root_args.add("top");
@@ -87,6 +90,13 @@ public class TabCompletionManager implements TabCompleter {
         }
         list.add("true");
         list.add("false");
+        return list;
+      }
+      if (args[0].equalsIgnoreCase("conscript")) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+          list.add(player.getDisplayName());
+        }
+        list.add("*");
         return list;
       }
     }

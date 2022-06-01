@@ -129,15 +129,54 @@ public class BingoCommandExecutor implements CommandExecutor {
         if (plugin.game != null) {
           if (plugin.game.get_player(player) != null) {
             player.sendMessage(
-              "You are already a participant in the current bingo game."
+                    "You are already a participant in the current bingo game."
             );
             return true;
           }
           plugin.game.join(player);
         } else {
           player.sendMessage(
-            "No instance of bingo. Ask an admin to create one with §a/bingo new§f."
+                  "No instance of bingo. Ask an admin to create one with §a/bingo new§f."
           );
+        }
+        return true;
+      }
+      if (args[0].equalsIgnoreCase("conscript")) {
+        if (args.length == 1) {
+          sender.sendMessage("/bingo conscript [player]. to add all online players, use the wildcard *");
+          return true;
+        }
+        if (plugin.game == null) {
+          sender.sendMessage(
+                  "No instance of bingo. Ask an admin to create one with §a/bingo new§f."
+          );
+          return true;
+        }
+        for (int i = 1; i < args.length; i++) {
+          if (args[i].equals("*")) {
+            for (Player bp : Bukkit.getOnlinePlayers()) {
+              if (plugin.game.get_player(bp) != null) {
+                sender.sendMessage(
+                         bp.getDisplayName() + " is already a participant in the current bingo game."
+                );
+              } else {
+                plugin.game.join(bp);
+              }
+            }
+            return true;
+          }
+          player = Bukkit.getPlayer(args[i]);
+          if (player == null) {
+            sender.sendMessage("Player " + args[i] + " was not found online.");
+          } else {
+            if (plugin.game.get_player(player) != null) {
+              sender.sendMessage(
+                      args[i] + " is already a participant in the current bingo game."
+              );
+            } else {
+              plugin.game.join(player);
+            }
+          }
         }
         return true;
       }
@@ -306,12 +345,26 @@ public class BingoCommandExecutor implements CommandExecutor {
         player.teleport(
           new Location(
             player.getWorld(),
-            (double) px,
+            (double) px + 0.5,
             (double) top_block.getLocation().getBlockY() + 1,
-            (double) pz
+            (double) pz + 0.5//todo
           )
         );
         player.sendMessage("Teleported you to the surface.");
+        return true;
+      }
+      if (args[0].equalsIgnoreCase("prolong")) {
+        if (args.length != 2) {
+          sender.sendMessage(
+                  "Usage: /bingo prolong [timeInSeconds]"
+          );
+          return true;
+        }
+        if (plugin.game == null) {
+          sender.sendMessage("No instance of bingo. Ask an admin to create one with §a/bingo new§f.");
+          return true;
+        }
+        plugin.game.prolong(Integer.parseInt(args[1]));
         return true;
       }
       if (args[0].equalsIgnoreCase("about")){
@@ -328,10 +381,22 @@ public class BingoCommandExecutor implements CommandExecutor {
       " creates a new bingo game, and allows players to join it."
     );
     sender.sendMessage(
-      pref +
-      "/bingo join" +
-      suff +
-      " joins the current bingo game, if it exists and has not yet finished."
+            pref +
+                    "/bingo join" +
+                    suff +
+                    " joins the current bingo game, if it exists and has not yet finished."
+    );
+    sender.sendMessage(
+            pref +
+                    "/bingo conscript [player]" +
+                    suff +
+                    " adds [player] to the current bingo game, if it exists and has not yet finished."
+    );
+    sender.sendMessage(
+            pref +
+                    "/bingo prolong [timeInSeconds]" +
+                    suff +
+                    " extends the duration of the current bingo game."
     );
     sender.sendMessage(
       pref +

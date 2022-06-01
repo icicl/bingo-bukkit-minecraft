@@ -1,6 +1,8 @@
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -69,11 +71,18 @@ public class BingoPlayer {
         ItemStack tool;
         ItemMeta meta;
         PlayerInventory pinv=this.player.getInventory();
-        for (String item:this.plugin.getConfig().getStringList("initial-items-unbreakable")){
+        for (String item:this.plugin.getConfig().getConfigurationSection("initial-items-unbreakable").getKeys(false)){
             tool=new ItemStack(Material.getMaterial(item.toUpperCase()));
             meta=tool.getItemMeta();
             meta.setUnbreakable(true);
             tool.setItemMeta(meta);
+            if (this.plugin.getConfig().getConfigurationSection("initial-items-unbreakable." + item) != null) {
+                int level = this.plugin.getConfig().getInt("initial-items-unbreakable." + item + ".level");
+                String enchant = this.plugin.getConfig().getString("initial-items-unbreakable." + item + ".enchant");
+                if (Enchantment.getByKey(NamespacedKey.fromString(enchant)) != null) {
+                    tool.addUnsafeEnchantment(Enchantment.getByKey(NamespacedKey.fromString(enchant)), level);
+                }
+            }
             if (tool==null){
                 this.plugin.log(item+" not recognized as valid material.");
             } else {
@@ -88,21 +97,6 @@ public class BingoPlayer {
                 pinv.addItem(tool);
             }
         }
-/*        tool=new ItemStack(Material.IRON_PICKAXE);
-        ItemMeta meta=tool.getItemMeta();
-        meta.setUnbreakable(true);
-        tool.setItemMeta(meta);
-        pinv.addItem(tool);
-        tool=new ItemStack(Material.IRON_AXE);
-        tool.getItemMeta().setUnbreakable(true);
-        pinv.addItem(tool);
-        tool=new ItemStack(Material.IRON_SHOVEL);
-        tool.getItemMeta().setUnbreakable(true);
-        pinv.addItem(tool);
-        this.player.getInventory().addItem(new ItemStack(Material.GOLDEN_CARROT, 64));*/
-        //this.player.getInventory().addItem(new ItemStack(Material.FURNACE,64));
-        //this.player.getInventory().addItem(new ItemStack(Material.COAL,64));
-        //this.player.getInventory().addItem(new ItemStack(Material.RAW_IRON,64));
         if (this.map != null) {
             this.player.getInventory().setItemInOffHand(this.map);
         }

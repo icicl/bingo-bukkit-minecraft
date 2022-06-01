@@ -63,4 +63,8 @@ public class GameDaemon extends BukkitRunnable { //i dont know what daemon means
         this.timer = time;
         this.score_counter = SCORE_COUNTER + 1;
     }
+
+    public void prolong(int time) {
+        this.timer += time;
+    }
 }

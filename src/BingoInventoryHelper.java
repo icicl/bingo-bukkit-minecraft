@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 
 public class BingoInventoryHelper implements Listener {
 
@@ -123,6 +124,18 @@ public class BingoInventoryHelper implements Listener {
                         plugin.game.get_player(e.getPlayer()).getMap().equals(e.getMainHandItem())
         ) {
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onBucket(PlayerBucketFillEvent e) {
+        if (plugin.game == null || plugin.game.in_progress == false) {
+            return;
+        }
+        Player player = e.getPlayer();
+        BingoPlayer bplayer = this.plugin.game.get_player(player);
+        if (bplayer.goals_remaining.contains(e.getItemStack().getType())) {
+            find_goal(bplayer, e.getItemStack().getType());
         }
     }
 

@@ -8,14 +8,18 @@ reward-decrease-amount: 1 # by how many points the rewards are decreased
 bingo-set-score-to-zero: false # whether other player will no longer gain points on finding items in your bingo
 bingo-bonus-static: 0 # how many bonus points a bingo will award, regardless of how many points you received for said bingo's items
 bingo-bonus-multiplier: 1.0 # how much items in a bingo are multiplied by, will round score increase to int. this is the BONUS, so a value of 0 means
-                            # that no dynamic bonus will be given for bingos, and a value of 2 means that all the items in a bingo will award triple points.
+# that no dynamic bonus will be given for bingos, and a value of 2 means that all the items in a bingo will award triple points.
 initial-items-unbreakable: # players will be given these items at the start of the game, and every time they respawn.
-  - iron_pickaxe
-  - iron_axe
-  - iron_shovel
+  iron_pickaxe:
+    enchant: minecraft:fortune
+    level: 3
+  iron_axe:
+    enchant: minecraft:looting
+    level: 3
+  iron_shovel:
+    enchant: none
 initial-items: # players will also be given the specified amount of these items at the start of the game, and when they respawn.
   golden_carrot: 64
-
 
 blocks:
   red_:
@@ -67,7 +71,7 @@ blocks:
     yellow_terracotta: [10,0]
     yellow_wool: [10,0]
   lime:
-    weight: [10,0]
+    weight: [2,40]
     lime_banner: [0,0]
     lime_bed: [0,0]
     lime_candle: [0,0]
@@ -83,7 +87,7 @@ blocks:
     lime_terracotta: [10,0]
     lime_wool: [10,0]
   green:
-    weight: [10,0]
+    weight: [0,50]
     green_banner: [0,0]
     green_bed: [0,0]
     green_candle: [0,0]
@@ -115,7 +119,7 @@ blocks:
     light_blue_terracotta: [10,0]
     light_blue_wool: [10,0]
   cyan:
-    weight: [10,0]
+    weight: [0,50]
     cyan_banner: [0,0]
     cyan_bed: [0,0]
     cyan_candle: [0,0]
@@ -275,7 +279,7 @@ blocks:
     black_terracotta: [10,0]
     black_wool: [10,0]
   acacia:
-    weight: [5,25]
+    weight: [4,30]
     acacia_boat: [10,0]
     acacia_button: [0,0]
     acacia_door: [10,0]
@@ -309,7 +313,7 @@ blocks:
     birch_trapdoor: [10,0]
     birch_wood: [0,0]
   dark_oak:
-    weight: [5,25]
+    weight: [4,30]
     dark_oak_boat: [10,0]
     dark_oak_button: [0,0]
     dark_oak_door: [10,0]
@@ -360,7 +364,7 @@ blocks:
     oak_trapdoor: [10,0]
     oak_wood: [0,0]
   spruce:
-    weight: [5,25]
+    weight: [6,20]
     spruce_boat: [10,0]
     spruce_button: [0,0]
     spruce_door: [10,0]
@@ -408,12 +412,12 @@ blocks:
   flower:
     weight: [10,0]
     red_tulip: [10,0]
-    orange_tulip: [4,0]
-    blue_orchid: [6,0]
-    pink_tulip: [4,0]
-    allium: [4,0]
-    white_tulip: [4,0]
-  blue_ice: [0,0]
+    orange_tulip: [10,0]
+    blue_orchid: [10,0]
+    pink_tulip: [10,0]
+    allium: [10,0]
+    white_tulip: [10,0]
+    blue_ice: [0,0]
   brown_mushroom: [10,0]
   brown_mushroom_block: [0,0]
   activator_rail: [10,0]
@@ -431,7 +435,7 @@ blocks:
   azalea_leaves: [0,0]
   azure_bluet: [10,0]
   baked_potato: [2,40]
-  bamboo: [0,50]
+  bamboo: [4,30]
   bamboo_sapling: [0,0]
   barrel: [10,0]
   basalt: [0,50]
@@ -475,7 +479,7 @@ blocks:
   bubble_coral_fan: [0,0]
   bucket: [10,0]
   budding_amethyst: [0,0]
-  cactus: [10,0]
+  cactus: [3,35]
   cake: [0,50]
   calcite: [10,0]
   campfire: [10,0]
@@ -533,7 +537,7 @@ blocks:
   composter: [10,0]
   conduit: [0,0]
   contents: [0,0]
-  cooked_rabbit: [10,0]
+  cooked_rabbit: [2,40]
   cookie: [0,50]
   copper_block: [10,0]
   copper_ingot: [10,0]
@@ -792,7 +796,7 @@ blocks:
   mossy_stone_brick_wall: [0,0]
   mossy_stone_bricks: [0,50]
   mushroom_stem: [0,0]
-  mushroom_stew: [10,0]
+  mushroom_stew: [3,35]
   mutton: [10,0]
   mycelium: [0,0]
   nautilus_shell: [0,0]
@@ -923,9 +927,9 @@ blocks:
   quartz_pillar: [0,50]
   quartz_slab: [0,0]
   quartz_stairs: [0,0]
-  rabbit: [5,25]
-  rabbit_hide: [5,25]
-  rabbit_stew: [0,30]
+  rabbit: [2,40]
+  rabbit_hide: [2,40]
+  rabbit_stew: [2,40]
   rail: [10,0]
   raw_copper: [10,0]
   raw_copper_block: [10,0]
